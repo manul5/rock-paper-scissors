@@ -6,7 +6,7 @@ function getComputerChoice() {
 }
 
 function getHumanChoice() {
-    let choice = (prompt('rock paper scissors'));
+    let choice = (prompt('Please choose: rock paper scissors'));
     let array_choice = array.find(item => item === choice.toLowerCase());
     if (array_choice) {
         return array_choice
@@ -38,6 +38,7 @@ function playRound(humanChoice, computerChoice) {
 }
 
 function playGame() {
+    console.log('ROCK PAPER SCISSORS GAME: THE BEST OF THREE WINS')
     while (human_score < 3 && computer_score < 3) {
         computer = getComputerChoice();
         do {
