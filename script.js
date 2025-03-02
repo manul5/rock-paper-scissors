@@ -39,6 +39,7 @@ function playRound(humanChoice, computerChoice) {
 
 function playGame() {
     console.log('ROCK PAPER SCISSORS GAME: THE BEST OF THREE WINS')
+    console.log('-----------------------------------')
     while (human_score < 3 && computer_score < 3) {
         computer = getComputerChoice();
         do {
