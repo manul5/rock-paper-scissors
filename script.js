@@ -1,59 +1,85 @@
 let array = ['rock', 'paper', 'scissors'];
 let human_score = 0, computer_score = 0;
 
+function capitalize(s)
+{
+    return String(s[0]).toUpperCase() + String(s).slice(1);
+}
+
 function getComputerChoice() {
     return array[parseInt(Math.random() * 3)];
 }
 
-function getHumanChoice() {
-    let choice = (prompt('Please choose: rock paper scissors'));
-    let array_choice = array.find(item => item === choice.toLowerCase());
-    if (array_choice) {
-        return array_choice
-    } else
-    alert(choice + ' is not a valid option. Try again.')
-        return false
-}
-
 function playRound(humanChoice, computerChoice) {
     if (humanChoice == computerChoice) {
-        console.log('TIE')
-        console.log('THE CURRENT SCORE IS: ')
-        console.log('HUMAN SCORE: ' + human_score)
-        console.log('COMPUTER SCORE: ' + computer_score)
+        let score = document.querySelector('.score')
+        if(score.hasChildNodes()) {
+            score.removeChild(score.firstChild)
+        }
+        let p = document.createElement('p')
+        p.setAttribute('class' ,'current-score')
+        score.appendChild(p)
+        p.innerHTML = `Its a TIE. </br> The current score is: <br/> 
+        Human Score : ${human_score} <br/>
+        Computer Score: ${computer_score}`
+
     } else if ((humanChoice == 'rock' && computerChoice == 'scissors') || (humanChoice == 'paper' && computerChoice == 'rock') || (humanChoice == 'scissors' && computerChoice == 'paper')){
-        console.log('YOU WON THE ROUND: ' + humanChoice.toUpperCase() + ' BEATS ' + computerChoice.toUpperCase())
         human_score++;
-        console.log('THE CURRENT SCORE IS: ')
-        console.log('HUMAN SCORE: ' + human_score)
-        console.log('COMPUTER SCORE: ' + computer_score)
+        let score = document.querySelector('.score')
+        if(score.hasChildNodes()) {
+            score.removeChild(score.firstChild)
+        }
+        let p = document.createElement('p')
+        p.setAttribute('class', 'current-score')
+        score.appendChild(p)
+        p.innerHTML = `You WON the round. ${capitalize(humanChoice)} beats ${capitalize(computerChoice)}. </br>
+        The current score is: <br/> 
+        Human Score : ${human_score} <br/>
+        Computer Score: ${computer_score}`
+        
     } else if ((humanChoice == 'rock' && computerChoice == 'paper') || (humanChoice == 'paper' && computerChoice == 'scissors') || (humanChoice == 'scissors' && computerChoice == 'rock')) {
-        console.log('COMPUTER WON THE ROUND: ' + computerChoice.toUpperCase() + ' BEATS ' + humanChoice.toUpperCase())
         computer_score++;
-        console.log('THE CURRENT SCORE IS: ')
-        console.log('HUMAN SCORE: ' + human_score)
-        console.log('COMPUTER SCORE: ' + computer_score)
+        let score = document.querySelector('.score')
+        if(score.hasChildNodes()) {
+            score.removeChild(score.firstChild)
+        }
+        let p = document.createElement('p')
+        p.setAttribute('class', 'current-score')
+        score.appendChild(p)
+        p.innerHTML = `Computer WON the round. ${capitalize(computerChoice)} beats ${capitalize(humanChoice)}. </br>
+        The current score is: <br/> 
+        Human Score : ${human_score} <br/>
+        Computer Score: ${computer_score}`
     }
-    console.log('-----------------------------------')
 }
 
 function playGame() {
-    console.log('ROCK PAPER SCISSORS GAME: THE BEST OF THREE WINS')
-    console.log('-----------------------------------')
-    while (human_score < 3 && computer_score < 3) {
-        computer = getComputerChoice();
-        do {
-            human = getHumanChoice();
-        } while (human == false)
-        
-        playRound(human, computer);
-
-        if (human_score == 3) {
-            console.log('YOU WON THE GAME')
-        } else if (computer_score == 3) {
-            console.log('COMPUTER WON THE GAME')
-        }
-    }
+    
+    let count = 0
+    btns = document.querySelectorAll('button')
+    btns.forEach(element => {
+        element.addEventListener('click', () => {
+            count ++
+            p = document.querySelector('p')
+            p.textContent = ('Press a button to play the next round! ' + count)
+            playRound(element.classList.value, getComputerChoice());
+            if (count == 5) {
+                let container = document.querySelector('.button-container')
+                container.remove()
+                count = 0
+                let el = document.createElement('div')
+                if(computer_score > human_score) {
+                    el.textContent = 'Computer WON the game.'
+                } else if (computer_score < human_score){
+                    el.textContent = 'You WON the game.'
+                } else {
+                    el.textContent = 'The game was TIED.'
+                }
+                document.body.appendChild(el)
+            }
+        })
+    });
+    
 }
 
 playGame();
